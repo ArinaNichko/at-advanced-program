@@ -15,6 +15,7 @@ public class ChromeDriverManager extends WebDriverCreator {
 
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+        chromeOptions.addArguments("--headers=Authorization: Bearer Zg3XqEDeYWM9pVGiNnThawaBTBbv5bpY_SS0aSFIaR126ykBZXKxc86JfAw-DA9sThbHMUpcMojSoiA0cnXY4iHhz8eMefX1G");
 
         WebDriver driver = new ChromeDriver(chromeOptions);
 
