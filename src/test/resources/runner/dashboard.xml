@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Suite">
+    <listeners>
+        <listener class-name="org.example.reporting.ExtentReporter"/>
+    </listeners>
+
+    <test name="Report Portal" >
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="testCases.testngTestCases.dashboardTestCases.CreationDashboardTests"/>
+            <class name="testCases.testngTestCases.dashboardTestCases.EditingDashboardTests"/>
+            <class name="testCases.testngTestCases.dashboardTestCases.SearchingDashboardTests"/>
+        </classes>
+    </test>
+</suite>
