@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Parameters;
 
 public class BaseTest {
     public WebDriver driver;
@@ -15,10 +14,10 @@ public class BaseTest {
     public static String login;
     public static String password;
 
-    @Parameters({"browser"})
+//    @Parameters({"browser"})
     @BeforeMethod
-    public void beforeClass(String browser) {
-        DriverProvider.initialize(browser);
+    public void beforeClass() {
+        DriverProvider.initialize("chrome");
         driver = DriverProvider.getInstance();
         PageFactory.initElements(driver, this);
         initializeConstants();

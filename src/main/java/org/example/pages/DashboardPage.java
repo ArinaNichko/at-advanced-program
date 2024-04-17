@@ -36,10 +36,13 @@ public class DashboardPage extends BasePage {
     private List<WebElement> dashboards;
     @FindBy(xpath = "//button[text()='Update']")
     private WebElement updateButton;
+    @FindBy(xpath = "//button[text()='Delete']")
+    private WebElement deleteButton;
     @FindBy(xpath = "//input[@placeholder='Search by name']")
     private WebElement searchPlaceholder;
     @FindBy(xpath = "//div[contains(@class, 'noResultsForFilter')]")
     private WebElement noResultMessage;
+
 
     public DashboardPage(WebDriver driver) {
         super(driver);
@@ -73,7 +76,9 @@ public class DashboardPage extends BasePage {
     }
 
     public boolean isDashboardNameHighlightedRed() {
-        return dashboardNamePlaceholder.getCssValue(BORDER_COLOR).equals(EXPECTED_RED_COLOR);
+        ExpectedCondition<Boolean> isPlaceholderRed = input ->
+                dashboardNamePlaceholder.getCssValue(BORDER_COLOR).equals(EXPECTED_RED_COLOR);
+        return getDriverWait().until(isPlaceholderRed);
     }
 
     public boolean isAddDashboardWindowOpened() {
@@ -82,6 +87,9 @@ public class DashboardPage extends BasePage {
 
     public WebElement getDashboard(String name) {
         waitDashboardsHasExpectedSize();
+        ExpectedCondition<Boolean> isNameDisplayed = input -> dashboards.stream()
+                .anyMatch(dashboard -> dashboard.getText().equals(name));
+        getDriverWait().until(isNameDisplayed);
         return dashboards.stream()
                 .filter(dashboard -> dashboard.getText().equals(name))
                 .findFirst()
@@ -109,7 +117,7 @@ public class DashboardPage extends BasePage {
     }
 
     public void waitDashboardsHasExpectedSize() {
-        ExpectedCondition<Boolean> doesDashboardsHasExpectedSize = input -> dashboards.size() > 4;
+        ExpectedCondition<Boolean> doesDashboardsHasExpectedSize = input -> dashboards.size() >= 2;
         getDriverWait().until(doesDashboardsHasExpectedSize);
     }
 
@@ -127,8 +135,20 @@ public class DashboardPage extends BasePage {
         return dashboards.size();
     }
 
+    public boolean verifyDashboardSize(int expectedSize) {
+        ExpectedCondition<Boolean> isListUpdated = input -> dashboards.size() == expectedSize;
+        return getDriverWait().until(isListUpdated);
+    }
+
     public boolean isNoDashboardMessageDisplayed() {
         getDriverWait().until(ExpectedConditions.visibilityOf(noResultMessage));
         return noResultMessage.isDisplayed();
+    }
+
+    public void deleteDashboard(String name) {
+        String deleteIconXpath = "./ancestor::div[1]//i[contains(@class, 'delete')]";
+        WebElement dashboardDeleteIcon = getDashboard(name).findElement(By.xpath(deleteIconXpath));
+        waitAndClick(dashboardDeleteIcon);
+        waitAndClick(deleteButton);
     }
 }
