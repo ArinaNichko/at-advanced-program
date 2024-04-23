@@ -15,9 +15,9 @@ public class ChromeDriverManager extends WebDriverCreator {
 
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+        chromeOptions.addArguments("--window-size=1920,1080");
 
         WebDriver driver = new ChromeDriver(chromeOptions);
-
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(20));
         driver.manage().window().maximize();
