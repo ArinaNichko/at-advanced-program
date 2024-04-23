@@ -10,7 +10,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class BaseTest {
     public WebDriver driver;
-    public static PropertiesHelper propertiesHelper;
+    public PropertiesHelper propertiesHelper;
     public static String login;
     public static String password;
 
