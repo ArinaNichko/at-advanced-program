@@ -2,6 +2,7 @@
 <suite name="Suite">
     <listeners>
         <listener class-name="org.example.reporting.ExtentReporter"/>
+        <listener class-name="org.example.reporting.TestListener"/>
     </listeners>
 
     <test name="Report Portal" >
