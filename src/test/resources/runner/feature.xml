@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="Suite">
+    <listeners>
+        <listener class-name="org.example.reporting.ExtentReporter"/>
+        <listener class-name="org.example.reporting.TestListener"/>
+    </listeners>
+
+    <test name="Report Portal" >
+        <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="org.example.cucumber.runner.RunCucumberTestTestng"/>
+        </classes>
+    </test>
+</suite>

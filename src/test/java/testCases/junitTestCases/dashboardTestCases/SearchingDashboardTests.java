@@ -2,14 +2,11 @@ package testCases.junitTestCases.dashboardTestCases;
 
 import junit.framework.Assert;
 import org.example.pages.DashboardPage;
-import org.example.pages.LoginPage;
 import org.example.setUp.junit.BaseTest;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 public class SearchingDashboardTests extends BaseTest {
-
 
     @ParameterizedTest
     @ValueSource(strings = {"test", "TEST", "tEST",""})

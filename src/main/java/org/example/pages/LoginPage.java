@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import static org.example.utils.WaitUtils.getDriverWait;
 
 public class LoginPage extends BasePage {
-    private static String baseUrl = propertiesHelper.getProperty("baseUrl");
+//    private static String baseUrl = propertiesHelper.getProperty("baseUrl");
 
     @FindBy(xpath = "//input[@placeholder='Login']")
     private WebElement loginPlaceholder;
@@ -23,6 +23,7 @@ public class LoginPage extends BasePage {
     }
 
     public LoginPage enterLogin(String login) {
+        getDriverWait().until(ExpectedConditions.visibilityOf(loginPlaceholder));
         loginPlaceholder.sendKeys(login);
         return this;
     }
@@ -38,7 +39,7 @@ public class LoginPage extends BasePage {
     }
 
     public LoginPage goToLoginPage() {
-        driver.get(baseUrl);
+        driver.get("https://reportportal.epam.com/ui/");
         return this;
     }
 
