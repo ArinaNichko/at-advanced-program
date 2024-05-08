@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.example.cucumber.context.CucumberContext;
 import org.example.session.SessionKey;
+import org.example.utils.ScreenshotsUtils;
 import org.testng.Assert;
 
 import static org.example.cucumber.context.CucumberContext.*;
@@ -110,5 +111,10 @@ public class CreationAndEditionSteps {
     public void verifyNewDashboardInList(String newName) {
         Assert.assertTrue(dashboardPage.isDashboardDisplayed(newName));
         session.put(SessionKey.DASHBOARD_NAME, newName);
+    }
+
+    @When("Capture screenshot")
+    public void captureScreenshot() {
+        ScreenshotsUtils.captureAndLogScreenshot( "Example step");
     }
 }

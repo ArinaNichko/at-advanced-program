@@ -53,7 +53,8 @@ public class ExtentReporter implements ITestListener {
     public void onTestFailure(ITestResult result) {
         String failureLogg = "TEST CASE FAILED";
         Markup m = MarkupHelper.createLabel(failureLogg, ExtentColor.RED);
-        TEST_REPORT.get().log(Status.FAIL, m);
+        TEST_REPORT.get().log(Status.FAIL, m)
+                .addScreenCaptureFromPath(".//reports/screenshots/" + result.getName() + ".png");
     }
 
     @Override

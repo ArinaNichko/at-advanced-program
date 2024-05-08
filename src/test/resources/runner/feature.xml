@@ -6,7 +6,7 @@
     </listeners>
 
     <test name="Report Portal" >
-        <parameter name="browser" value="chrome"/>
+<!--        <parameter name="browser" value="chrome"/>-->
         <classes>
             <class name="org.example.cucumber.runner.RunCucumberTestTestng"/>
         </classes>
