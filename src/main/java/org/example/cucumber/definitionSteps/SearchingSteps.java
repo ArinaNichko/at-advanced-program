@@ -1,39 +1,20 @@
 package org.example.cucumber.definitionSteps;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.But;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.example.cucumber.context.CucumberContext;
 import org.example.session.SessionKey;
 import org.testng.Assert;
 
 import static org.example.cucumber.context.CucumberContext.dashboardPage;
 import static org.example.cucumber.context.CucumberContext.session;
 
-public class SearchingSteps  {
-
-    private final CucumberContext context;
-
-    public SearchingSteps(CucumberContext context) {
-        this.context = context;
-    }
-
-    @Before
-    public void setup() {
-        context.setUp();
-    }
-
-    @After(order = 1)
-    public void tearDown() {
-        context.quitDriver();
-    }
+public class SearchingSteps {
 
     @When("user searches by {string}")
     public void searchByName(String partialName) {
         session.put(SessionKey.EXPECTED_DASHBOARD_SIZE
-                ,  dashboardPage.getExpectedDashboardsSizeByName(partialName));
+                , dashboardPage.getExpectedDashboardsSizeByName(partialName));
         dashboardPage.searchByName(partialName);
     }
 

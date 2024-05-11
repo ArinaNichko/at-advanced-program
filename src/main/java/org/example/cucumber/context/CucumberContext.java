@@ -1,8 +1,13 @@
 package org.example.cucumber.context;
 
+import com.google.gson.JsonObject;
 import io.restassured.http.Method;
+import io.restassured.response.Response;
+import org.apache.http.entity.StringEntity;
+import org.example.clients.HttpClient;
 import org.example.clients.RestClient;
 import org.example.driver.DriverProvider;
+import org.example.exception.TestExecutionException;
 import org.example.pages.CreatedDashboardPage;
 import org.example.pages.DashboardPage;
 import org.example.pages.LoginPage;
@@ -13,11 +18,11 @@ import org.example.utils.PropertiesHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
-import static org.example.utils.FileHelper.readJsonFileAsString;
+import static org.example.session.SessionKey.JSON_STRING;
+import static org.example.utils.JsonHelper.*;
 
 public class CucumberContext {
     protected static PropertiesHelper propertiesHelper = PropertiesHelper.getInstance();
@@ -31,16 +36,13 @@ public class CucumberContext {
     public static CreatedDashboardPage createdDashboardPage;
     public static final Session session = new SessionImpl();
     public static RestClient restClient = new RestClient();
+    public static HttpClient httpClient = new HttpClient();
 
     public void setUp() {
         DriverProvider.initialize("chrome");
         driver = DriverProvider.getInstance();
         PageFactory.initElements(driver, this);
         configurePages();
-        initializeConstants();
-    }
-
-    public void setUpApi() {
         initializeConstants();
     }
 
@@ -86,15 +88,43 @@ public class CucumberContext {
         restClient.sendRequestWithParams(Method.DELETE, id, Collections.emptyMap());
     }
 
+    public void cleanupApacheApi() {
+        String id = session.get(SessionKey.DASHBOARD_ID, String.class);
+        httpClient.sendRequest("DELETE", id, null);
+    }
+
     public void putInitialState() {
         String dashboard = readJsonFileAsString(initialDashBoardPath);
         String id = session.get(SessionKey.DASHBOARD_ID, String.class);
         restClient.sendRequestWithBody(Method.PUT, id, dashboard);
     }
 
+    public void putInitialStateApache() {
+        String dashboard = readJsonFileAsString(initialDashBoardPath);
+        String id = session.get(SessionKey.DASHBOARD_ID, String.class);
+        try {
+            httpClient.sendRequest("PUT", id, new StringEntity(dashboard));
+        } catch (UnsupportedEncodingException e) {
+            throw new TestExecutionException("Can not encode string as StringEntity");
+        }
+    }
+
     public void createDashboard() {
         String dashboard = readJsonFileAsString(creationDashBoardPath);
-        restClient.sendRequestWithBody(Method.POST, "", dashboard);
-        session.put(SessionKey.DASHBOARD_ID, String.class);
+        Response response = restClient.sendRequestWithBody(Method.POST, "", dashboard);
+        String id = response.jsonPath().getString("id");
+        session.put(SessionKey.DASHBOARD_ID, id);
+    }
+
+    public void createDashboardApache() {
+        String dashboard = readJsonFileAsString(creationDashBoardPath);
+        try {
+            httpClient.sendRequest("POST", "", new StringEntity(dashboard));
+        } catch (UnsupportedEncodingException e) {
+            throw new TestExecutionException("Can not encode string as StringEntity");
+        }
+        String jsonString = session.get(JSON_STRING, String.class);
+        JsonObject jsonObject = readStringAsJsonElement(jsonString);
+        session.put(SessionKey.DASHBOARD_ID, getId(jsonObject));
     }
 }

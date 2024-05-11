@@ -1,6 +1,6 @@
+@apiSetup
 Feature: Testing feature
   This feature contains steps to get dashboard
-
 
   Scenario: 01 | Get all dashboards - happy path
     When the GET request is sent to the '166078' endpoint without params
@@ -12,14 +12,13 @@ Feature: Testing feature
     Then the status code is 404
     And  message contains: "Dashboard with ID '166077' not found on project"
 
-    @createDashboard
-  Scenario: 03 | Delete dashboards - positive path
-    When the DELETE request is sent with endpoint 'DASHBOARD_ID'
-    Then the status code is 200
-    And  the message contains the ID of the deleted dashboard: 'DASHBOARD_ID'
-
   @createDashboard
-  Scenario: 03 | Delete dashboards with the same id - negative path
-    When the DELETE request is sent with endpoint 'DASHBOARD_ID'
+  Scenario: 03 | Delete dashboards - positive path
+    When the DELETE request is sent with endpoint from precondition
     Then the status code is 200
-    And error message dashboard with 'DASHBOARD_ID' is not found
+    And  the message contains the ID of the deleted dashboard
+
+  Scenario: 03 | Delete dashboards with the same id - negative path
+    When the DELETE request is sent with endpoint from precondition
+    Then the status code is 404
+    And error message dashboard with ID from precondition is not found

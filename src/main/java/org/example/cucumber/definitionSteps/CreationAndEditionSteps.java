@@ -1,13 +1,9 @@
 package org.example.cucumber.definitionSteps;
 
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import lombok.extern.slf4j.Slf4j;
-
-import org.example.cucumber.context.CucumberContext;
 import org.example.session.SessionKey;
 import org.example.utils.ScreenshotsUtils;
 import org.testng.Assert;
@@ -16,31 +12,6 @@ import static org.example.cucumber.context.CucumberContext.*;
 
 @Slf4j
 public class CreationAndEditionSteps {
-    private final CucumberContext context;
-
-    public CreationAndEditionSteps(CucumberContext context) {
-        this.context = context;
-    }
-
-    @Before
-    public void setup() {
-        context.setUp();
-    }
-
-    @After(order = 1)
-    public void tearDown() {
-        context.quitDriver();
-    }
-
-    @After(value = "@cleanup", order = 2)
-    public void cleanUp() {
-        context.cleanUp();
-    }
-
-    @After(value = "@restoreInitialState", order = 2)
-    public void restoreInitialState() {
-        context.restoreInitialStateAfterEditing();
-    }
 
     @When("^user clicks add new dashboard button$")
     public void clickAddNewDashboardButton() {
@@ -115,6 +86,6 @@ public class CreationAndEditionSteps {
 
     @When("Capture screenshot")
     public void captureScreenshot() {
-        ScreenshotsUtils.captureAndLogScreenshot( "Example step");
+        ScreenshotsUtils.captureAndLogScreenshot("Example step");
     }
 }

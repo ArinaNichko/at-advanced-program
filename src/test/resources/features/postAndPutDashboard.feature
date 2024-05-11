@@ -1,6 +1,6 @@
+@apiSetup
 Feature: Testing feature
   This feature contains steps to get dashboard
-
 
   Scenario: 01 | Post new dashboard - happy path
     When the POST request is sent with body from file:
@@ -26,7 +26,7 @@ Feature: Testing feature
     Then the status code is 200
     And message contains: "Dashboard with ID = '166078' successfully updated"
 
-    @apiInitialState
+  @apiInitialState
   Scenario: 05 | Put dashboard with new name and description - happy path
     When the PUT request is sent to endpoint "166078" with body from file:
       | path | src/test/resources/requests/put-dashboard.json |
@@ -38,9 +38,3 @@ Feature: Testing feature
       | path | src/test/resources/requests/put-dashboard-bad-path.json |
     Then the status code is 400
     And message contains: "Incorrect Request. [Field 'name' should not be null.]"
-
-  Scenario: 06 | Patch dashboard with new id - negative path
-    When the PATCH request is sent to endpoint "166078" with body from file:
-      | path | src/test/resources/requests/put-dashboard.json |
-    Then the status code is 200
-    And message contains: "Dashboard with ID = '166078' successfully updated"
