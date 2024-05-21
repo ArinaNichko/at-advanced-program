@@ -19,7 +19,9 @@ public class TestListener implements ITestListener {
 
 
   public void onTestStart(ITestResult result) {
+
   }
+
 
   public void onTestSuccess(ITestResult result) {
     log.info("Passed test - " + result.getName());

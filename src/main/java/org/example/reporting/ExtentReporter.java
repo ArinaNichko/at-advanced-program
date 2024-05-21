@@ -34,11 +34,12 @@ public class ExtentReporter implements ITestListener {
 
     @Override
     public void onTestStart(ITestResult result) {
-        String testCaseName = result.getMethod().getMethodName();
+        String testCaseName = 		(String) result.getAttribute("name");
         String testDescription = result.getMethod().getDescription();
         String testCategory = Arrays.toString(result.getMethod().getGroups());
         ExtentTest test = extent.createTest(testCaseName, testDescription)
-                .assignCategory(testCategory);
+                .assignCategory(testCategory)
+                .assignAuthor(testDescription);
         TEST_REPORT.set(test);
     }
 

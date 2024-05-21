@@ -1,5 +1,7 @@
 package org.example.cucumber.context;
 
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import com.google.gson.JsonObject;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
@@ -8,9 +10,7 @@ import org.example.clients.HttpClient;
 import org.example.clients.RestClient;
 import org.example.driver.DriverProvider;
 import org.example.exception.TestExecutionException;
-import org.example.pages.CreatedDashboardPage;
-import org.example.pages.DashboardPage;
-import org.example.pages.LoginPage;
+import org.example.pages.*;
 import org.example.session.Session;
 import org.example.session.SessionImpl;
 import org.example.session.SessionKey;
@@ -32,8 +32,12 @@ public class CucumberContext {
     public static String initialDashBoardPath;
     public static String creationDashBoardPath;
     public static LoginPage loginPage;
+    public static SelenideLoginPage selenideLoginPage;
     public static DashboardPage dashboardPage;
+    public static SelenideDashboardPage selenideDashboardPage;
     public static CreatedDashboardPage createdDashboardPage;
+    public static SelenideCreatedDashboardPage selenideCreatedDashboardPage;
+    public static SelenideWidgetPage selenideWidgetPage;
     public static final Session session = new SessionImpl();
     public static RestClient restClient = new RestClient();
     public static HttpClient httpClient = new HttpClient();
@@ -46,10 +50,16 @@ public class CucumberContext {
         initializeConstants();
     }
 
+
     public void configurePages() {
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
         createdDashboardPage = new CreatedDashboardPage(driver);
+        selenideDashboardPage = new SelenideDashboardPage();
+        selenideLoginPage = new SelenideLoginPage();
+        selenideCreatedDashboardPage = new SelenideCreatedDashboardPage();
+        selenideWidgetPage = new SelenideWidgetPage();
+
     }
 
     public void quitDriver() {
@@ -71,12 +81,38 @@ public class CucumberContext {
                 .deleteDashboard(dashboardName);
     }
 
+    public void cleanUpSelenide() {
+        String dashboardName = session.get(SessionKey.DASHBOARD_NAME, String.class);
+        selenideCreatedDashboardPage
+                .goToDashboardPage()
+                .deleteDashboard(dashboardName);
+    }
+
+    public void cleanupWidget() {
+        Selenide.refresh();
+        String dashboardName = session.get(SessionKey.WIDGET_NAME, String.class);
+        selenideWidgetPage
+                .deleteWidget(dashboardName);
+    }
+
     public void restoreInitialStateAfterEditing() {
         String name = session.get(SessionKey.DASHBOARD_NAME, String.class);
         String initialName = session.get(SessionKey.DASHBOARD_INITIAL_NAME, String.class);
         String description = session.get(SessionKey.DASHBOARD_DESCRIPTION, String.class);
 
         dashboardPage
+                .clickDashboardEditIcon(name)
+                .enterDashboardName(initialName)
+                .enterDashboardDescription(description)
+                .clickUpdateButton();
+    }
+
+    public void restoreInitialStateAfterEditingSelenide() {
+        String name = session.get(SessionKey.DASHBOARD_NAME, String.class);
+        String initialName = session.get(SessionKey.DASHBOARD_INITIAL_NAME, String.class);
+        String description = session.get(SessionKey.DASHBOARD_DESCRIPTION, String.class);
+
+        selenideDashboardPage
                 .clickDashboardEditIcon(name)
                 .enterDashboardName(initialName)
                 .enterDashboardDescription(description)
@@ -126,5 +162,10 @@ public class CucumberContext {
         String jsonString = session.get(JSON_STRING, String.class);
         JsonObject jsonObject = readStringAsJsonElement(jsonString);
         session.put(SessionKey.DASHBOARD_ID, getId(jsonObject));
+    }
+
+    public void runRemote() {
+        Configuration.remote = "http://localhost:4444/wd/hub";
+        Configuration.browser = "firefox";
     }
 }

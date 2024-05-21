@@ -145,6 +145,11 @@
       <artifactId>json</artifactId>
       <version>20240303</version>
     </dependency>
+    <dependency>
+      <groupId>com.codeborne</groupId>
+      <artifactId>selenide</artifactId>
+      <version>7.3.1</version>
+    </dependency>
   </dependencies>
 
 
