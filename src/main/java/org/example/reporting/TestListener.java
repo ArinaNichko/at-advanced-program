@@ -19,14 +19,16 @@ public class TestListener implements ITestListener {
 
 
   public void onTestStart(ITestResult result) {
+
   }
+
 
   public void onTestSuccess(ITestResult result) {
     log.info("Passed test - " + result.getName());
   }
 
   public void onTestFailure(ITestResult result) {
-    saveScreenshot(result);
+
     log.debug("Screenshot was saved: {}", getCurrentTimeAsString() + ".png");
   }
 
@@ -37,6 +39,7 @@ public class TestListener implements ITestListener {
   }
 
   public void onTestFailedWithTimeout(ITestResult result) {
+    saveScreenshot(result);
     log.debug("Screenshot was saved: {}", getCurrentTimeAsString() + ".png");
     this.onTestFailure(result);
   }
@@ -52,8 +55,7 @@ public class TestListener implements ITestListener {
             .getScreenshotAs(OutputType.FILE);
     try {
       FileUtils.copyFile(screenCapture, new File(
-              ".//reports/screenshots/" +
-              getCurrentTimeAsString() + "/" + result.getMethod().getMethodName() + ".png"
+              ".//reports/screenshots/" + result.getName() + ".png"
       ));
     } catch (IOException e) {
       log.error("Failed to save screenshot: " + e.getLocalizedMessage());

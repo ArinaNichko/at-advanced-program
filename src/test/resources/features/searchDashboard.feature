@@ -1,3 +1,4 @@
+@uiSetup
 Feature: Testing feature
   This feature contains steps to create and edit a dashboard in ReportPortal
 
