@@ -41,7 +41,6 @@ public class TestListener implements ITestListener {
   public void onTestFailedWithTimeout(ITestResult result) {
     saveScreenshot(result);
     log.debug("Screenshot was saved: {}", getCurrentTimeAsString() + ".png");
-    this.onTestFailure(result);
   }
 
   public void onStart(ITestContext context) {
