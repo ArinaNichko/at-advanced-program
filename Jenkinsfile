@@ -19,7 +19,7 @@ pipeline {
       steps {
         script {
             withSonarQubeEnv() {
-      bat "mvn clean verify sonar:sonar -Dsonar.projectKey=automation-advanced -Dsonar.projectName=automation-advanced"
+      bat "mvn clean verify sonar:sonar -Dsonar.projectKey=automation-advanced -Dsonar.projectName=automation-advanced -Dsonar.scanner.metadataFilePath=$(Agent.TempDirectory)/sonar/$(Build.BuildNumber)/test/report-task.txt"
         }
       }
     }
