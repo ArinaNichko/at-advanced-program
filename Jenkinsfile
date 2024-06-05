@@ -15,7 +15,7 @@ pipeline {
         }
       }
     }
-   stage('Build Multi stage Docker Image') {
+   stage('SonarQube check') {
       steps {
         script {
             withSonarQubeEnv() {
