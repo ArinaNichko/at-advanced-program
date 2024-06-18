@@ -26,13 +26,13 @@ public class ApacheApiDashboardsSteps {
     @Then("the status code is {int} using Apache Http")
     public void verifyStatusCode(int expectedStatusCode) {
         int actualStatusCode = session.get(STATUS_CODE, Integer.class);
-        assertThat(actualStatusCode, Matchers.equalTo(expectedStatusCode));
-
         if (actualStatusCode == 201) {
             String jsonString = session.get(JSON_STRING, String.class);
             JsonObject jsonObject = readStringAsJsonElement(jsonString);
             session.put(DASHBOARD_ID, getId(jsonObject));
         }
+
+        assertThat(actualStatusCode, Matchers.equalTo(expectedStatusCode));
     }
 
     @And("retrieved data size is equal to {int} using Apache Http")
