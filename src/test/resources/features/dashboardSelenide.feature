@@ -3,7 +3,7 @@ Feature: Testing feature
   This feature contains steps to create and edit a dashboard in ReportPortal
 
   Background:
-    When user log in ReportPortal selenide
+#    When user log in ReportPortal selenide
 
   @cleanupSelenide
   Scenario Outline: Create dashboard positive result Selenide

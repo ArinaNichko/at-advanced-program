@@ -26,8 +26,9 @@ public class Hooks {
 
     @Before(value = "@selenideUiSetup")
     public void setupSelenideUi() {
-        context.runRemote();
-        context.configurePages();
+//        context.runRemote();
+//        context.setUp();
+    context.configurePages();
         context.initializeConstants();
     }
 
@@ -84,7 +85,7 @@ public class Hooks {
 
     @After(value = "@selenideUiSetup", order = 1)
     public void tearDownSelenide() {
-        Selenide.closeWebDriver();
+        context.quitDriver();
     }
 
     @After(value = "@cleanup", order = 2)
