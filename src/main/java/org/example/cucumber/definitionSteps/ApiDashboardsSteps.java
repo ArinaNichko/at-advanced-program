@@ -34,10 +34,10 @@ public class ApiDashboardsSteps {
     @Then("the status code is {int}")
     public void verifyStatusCode(int expectedStatusCode) {
         Response response = session.get(RESPONSE, Response.class);
-        assertThat(response.statusCode(), Matchers.equalTo(expectedStatusCode));
         if (response.statusCode() == 201) {
             session.put(DASHBOARD_ID, response.jsonPath().getString("id"));
         }
+        assertThat(response.statusCode(), Matchers.equalTo(expectedStatusCode));
     }
 
     @And("retrieved data size is equal to {int}")
